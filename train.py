@@ -10,7 +10,6 @@ from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 
-
 def train(lr=1e-3,wd=0,p=0,data=''):
     r"""train model using specific dataset
     Arguments:
@@ -31,7 +30,7 @@ def train(lr=1e-3,wd=0,p=0,data=''):
         print('No specific data')
         exit()
     
-    dir_path = './hw_data/train_torch4'
+    dir_path = 'train_torch'
     #load train data
     if data=='noise':
         with open(dir_path + "/noise.pickle.pkl","rb") as fr:
@@ -46,11 +45,11 @@ def train(lr=1e-3,wd=0,p=0,data=''):
         with open(dir_path + "/raw.pickle.pkl","rb") as fr:
             train = pickle.load(fr)
     elif data=='cat':
-        with open(dir_path + "/all_1.pickle.pkl","rb") as fr:
+        with open(dir_path + "/all.pickle.pkl","rb") as fr:
             train = pickle.load(fr)
 
     #load test data
-    with open("./hw_data/test_torch3/test.pickle.pkl","rb") as fr:
+    with open("test_torch/test.pickle.pkl","rb") as fr:
         test = pickle.load(fr)
 
     train_combined_label=[]
@@ -78,7 +77,10 @@ def train(lr=1e-3,wd=0,p=0,data=''):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
     #model,optimizer,scheduler and loss functions Declaration
+    # checkpoint = torch.load('./model_save/saved_model.pt')
     Combine_model=CNN2D(p=p).to(device)
+    # Combine_model.load_state_dict(checkpoint['model_state_dict'], strict=False)
+
     optimizer=torch.optim.Adam(Combine_model.parameters(),lr=lr,weight_decay=wd)
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer=optimizer, lr_lambda=lambda epoch: 0.95 ** epoch)
 
@@ -269,11 +271,11 @@ def train(lr=1e-3,wd=0,p=0,data=''):
     f.write(str(v_mse)+'\n')
 
     #trained model save
-    model_name=f'data-{data}_lr-{lr}_wd-{wd}'
-    torch.save(Combine_model, 'model_save/model'+model_name+'.pt')
+    model_name=f'saved_model'
+    torch.save(Combine_model, 'model_save/'+model_name+'.pt')
     
     return t_acc,t_f1,t_mse,v_acc,v_f1,v_mse
 
 if __name__ == "__main__":
 
-    train(lr=0.0001,data='cat'
+    train(lr=0.0001,data='cat')
