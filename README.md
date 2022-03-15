@@ -158,7 +158,7 @@ plt.subplots_adjust(left=0.2, bottom=0.1, right=2.0, top=1.2, wspace=0.4, hspace
 plt.show()
 ```
 
-![Untitled](%E1%84%87%E1%85%A5%E1%84%82%E1%85%B5%E1%86%BA%20API%20%20ad27d/Untitled.png)
+![Untitled](images/Untitled.png)
 
 ```python
 # 횟수별 데이터 개수 집계
@@ -195,7 +195,7 @@ plt.subplots_adjust(left=0.2, bottom=0.1, right=2.0, top=1.2, wspace=0.4, hspace
 plt.show()
 ```
 
-![Untitled](%E1%84%87%E1%85%A5%E1%84%82%E1%85%B5%E1%86%BA%20API%20%20ad27d/Untitled%201.png)
+![Untitled](images/Untitled%201.png)
 
 학습과 검증에 필요한 데이터는 모두 데이터 서버에 있습니다. augmented.ipynb 코드를 실행하지 않아도 데이터서버에 있는 모든 파일들을 다운로드하여도 무방합니다.
 
