@@ -45,7 +45,7 @@ pip install -r requirement.txt
     
 - 샘플 데이터 시각화(운동 종목 : 스쿼트 운동 횟수 : 4회)
 
-![model_arc](%E1%84%87%E1%85%A5%E1%84%82%E1%85%B5%E1%86%BA%20API%20%209090d/Untitled%201.png)
+![data_example](images/data_example.png)
 
 IMU 센서 데이터 : 가속도 및 각속도 x,y,z 총 6축으로 구성된 센서데이터
 
