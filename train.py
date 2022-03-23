@@ -6,7 +6,7 @@ import pickle
 from model import *
 from dataset import CustomDataset
 
-from tqdm import tqdm
+from tqdm import tqdm 
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 
@@ -52,8 +52,8 @@ def train(lr=1e-3,wd=0,p=0,data=''):
     with open("test_torch/test.pickle.pkl","rb") as fr:
         test = pickle.load(fr)
 
-    train_combined_label=[]
-    vaild_combined_label=[]
+    train_combined_label=[]  # (class label, count target)
+    vaild_combined_label=[]  # (class label, count target)
 
     #data split. data has 3 dim. each dimention has data,Class label,count target
     for ind in range(len(train[2])):
@@ -107,7 +107,7 @@ def train(lr=1e-3,wd=0,p=0,data=''):
         for e_num,(x,y) in enumerate(train_dataloader):
             batch_class,batch_count=y
             
-            x,batch_class,batch_count=x.to(device),batch_class.long().to(device),batch_count.float().to(device)#data to device
+            x,batch_class,batch_count=x.to(device),batch_class.long().to(device),batch_count.float().to(device) #data to device
             
             Combine_model.zero_grad()
             
@@ -134,6 +134,7 @@ def train(lr=1e-3,wd=0,p=0,data=''):
             #combine loss for gradient calculate and update model parameter
             total_loss=count_loss+class_loss
             total_loss.backward()
+            # optimizer.zero_grad()
             optimizer.step()
 
         #calculate training step result            
@@ -266,15 +267,15 @@ def train(lr=1e-3,wd=0,p=0,data=''):
     f.write('valid class F1 : ')
     f.write(str(v_f1)+'\n')
     
-    print('valid count acc: ',v_mse)
-    f.write('valid count acc: ')
+    print('valid count mse: ',v_mse)
+    f.write('valid count mse: ')
     f.write(str(v_mse)+'\n')
 
     #trained model save
-    model_name=f'saved_model'
-    torch.save(Combine_model, 'model_save/'+model_name+'.pt')
+    model_name=f'pretrained_model'
+    torch.save(Combine_model, 'model_save/'+ model_name +'.pt')
     
-    return t_acc,t_f1,t_mse,v_acc,v_f1,v_mse
+    return t_acc, t_f1, t_mse, v_acc, v_f1, v_mse
 
 if __name__ == "__main__":
 
