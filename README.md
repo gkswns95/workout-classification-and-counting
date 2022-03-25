@@ -4,7 +4,7 @@
 
 실험에 필요한 라이브러리와 주요 코드에 대해 설명하고 사전 학습된 모델을 통해 간단히 구동할 수 있는 구동 가이드를 제시한다. 또한 샘플 데이터로 모델의 학습 및 실험 결과를 확인한다.
 
-![model_arc](images/model_arc.png)
+![Untitled](%E1%84%87%E1%85%A5%E1%84%82%E1%85%B5%E1%86%BA%20API%20%209090d/Untitled.png)
 
 ### 필요한 라이브러리 설치
 
@@ -45,7 +45,7 @@ pip install -r requirement.txt
     
 - 샘플 데이터 시각화(운동 종목 : 스쿼트 운동 횟수 : 4회)
 
-![data_example](images/data_example.png)
+![Untitled](%E1%84%87%E1%85%A5%E1%84%82%E1%85%B5%E1%86%BA%20API%20%209090d/Untitled%201.png)
 
 IMU 센서 데이터 : 가속도 및 각속도 x,y,z 총 6축으로 구성된 센서데이터
 
@@ -186,7 +186,7 @@ plt.subplots_adjust(left=0.2, bottom=0.1, right=2.0, top=1.2, wspace=0.4, hspace
 plt.show()
 ```
 
-![Untitled](images/Untitled.png)
+![Untitled](%E1%84%87%E1%85%A5%E1%84%82%E1%85%B5%E1%86%BA%20API%20%209090d/Untitled%202.png)
 
 ```python
 # 횟수별 데이터 개수 집계
@@ -223,7 +223,7 @@ plt.subplots_adjust(left=0.2, bottom=0.1, right=2.0, top=1.2, wspace=0.4, hspace
 plt.show()
 ```
 
-![Untitled 1](images/Untitled 1.png)
+![Untitled](%E1%84%87%E1%85%A5%E1%84%82%E1%85%B5%E1%86%BA%20API%20%209090d/Untitled%203.png)
 
 학습과 검증에 필요한 데이터는 모두 데이터 서버에 있습니다. augmented.ipynb 코드를 실행하지 않아도 데이터서버에 있는 모든 파일들을 다운로드하여도 무방합니다.
 
@@ -328,7 +328,7 @@ with open('./test.txt', 'w', encoding='UTF-8') as f:
 
 ### 4. 테스트 데이터 구동
 
-- 센서 데이터 파일 추가
+- 센서 데이터 파일 추가이후 다음 코드 실행
     
     ```markdown
     sh shell_script/test_model.sh
@@ -338,52 +338,40 @@ with open('./test.txt', 'w', encoding='UTF-8') as f:
     
     ```markdown
     #!/bin/bash
-    python preprocessing_sensordata.py --dir_path ./raw_test/ --save_path save_test_torch/ --num_files 1000
-    python load_pretrain_model.py --src_path save_test_torch
+    python test_pretrain_model.py --dir_path ./raw_test/ --save_path last_test/ --num_files 1 --preprocessed_file_name test --save_path_results ./test.txt
     ```
     
     원하는 센서데이터를 전처리하고 pretrained model에 돌려 결과를 출력하고 싶을 때 원하는 경로 수정
     
-    - —dir_path = [센서데이터 위치한 폴더]
-    - —save_path = [전처리된 torch데이터 저장폴더]
-    - —src_path = [전처리된 torch데이터 폴더경로]
+    - —dir_path = [테스트 하고싶은 센서데이터 위치한 폴더경로]
+    - —save_path = [전처리된 torch데이터 저장할 폴더경로]
+    - —num_files = [전처리 할 센서 데이터 파일 개수 설정]
+    - —preprocessed_file_name = [전처리된 파일 이름 설정]
+    - —save_path_results = [최종 결과 txt 파일 저장 경로]
     
-    **Result.txt 파일 위치 변경 방법**
-    
-    load pretrain_model.py 의 다음과 같은 코드에서 저장 경로 및 이름 수정
-    
-    ex) ‘./test.txt’ → ‘./test2.txt’
-    
-    ```markdown
-    # save path for result 
-        with open('./test.txt', 'w', encoding='UTF-8') as f:
-            for class_pred, count_pred in zip(inverse_class(class_pred_labels), np.array(count_pred_labels).round(0).astype(int)):
-                f.write('[exercise,reps] : {}, {} \n'.format(class_pred, count_pred))
-    ```
 
 ### 5. PTL 파일 저장
 
-    ```markdown
-    sh save_ptl_file.sh
-    ```
-    
+```markdown
+sh save_ptl_file.sh
+```
+
 **save_pretrain_model_to_ptl.py**
-    
-    ```python
-    import torch
 
-    from model import *
-    from torch.utils.mobile_optimizer import optimize_for_mobile
+```python
+import torch
 
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+from model import *
+from torch.utils.mobile_optimizer import optimize_for_mobile
 
-    model = CNN2D(p=0).to(device)
-    model.eval()
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    example = torch.load('./example/x_example.pt')
+model = CNN2D(p=0).to(device)
+model.eval()
 
-    traced_script_module = torch.jit.trace(model, example)
-    traced_script_module_optimized = optimize_for_mobile(traced_script_module)
-    traced_script_module_optimized._save_for_lite_interpreter('test_ptl.ptl') # 저장경로
-    ```
-    
+example = torch.load('./example/x_example.pt')
+
+traced_script_module = torch.jit.trace(model, example)
+traced_script_module_optimized = optimize_for_mobile(traced_script_module)
+traced_script_module_optimized._save_for_lite_interpreter('test_ptl.ptl') # 저장경로
+```
