@@ -4,7 +4,7 @@
 
 실험에 필요한 라이브러리와 주요 코드에 대해 설명하고 사전 학습된 모델을 통해 간단히 구동할 수 있는 구동 가이드를 제시한다. 또한 샘플 데이터로 모델의 학습 및 실험 결과를 확인한다.
 
-![Untitled](%E1%84%87%E1%85%A5%E1%84%82%E1%85%B5%E1%86%BA%20API%20%209090d/Untitled.png)
+![Untitled](images/model_arc.png)
 
 ### 필요한 라이브러리 설치
 
@@ -45,7 +45,7 @@ pip install -r requirement.txt
     
 - 샘플 데이터 시각화(운동 종목 : 스쿼트 운동 횟수 : 4회)
 
-![Untitled](%E1%84%87%E1%85%A5%E1%84%82%E1%85%B5%E1%86%BA%20API%20%209090d/Untitled%201.png)
+![Untitled](images/data_example.png)
 
 IMU 센서 데이터 : 가속도 및 각속도 x,y,z 총 6축으로 구성된 센서데이터
 
@@ -186,7 +186,7 @@ plt.subplots_adjust(left=0.2, bottom=0.1, right=2.0, top=1.2, wspace=0.4, hspace
 plt.show()
 ```
 
-![Untitled](%E1%84%87%E1%85%A5%E1%84%82%E1%85%B5%E1%86%BA%20API%20%209090d/Untitled%202.png)
+![Untitled](images/Untitled.png)
 
 ```python
 # 횟수별 데이터 개수 집계
@@ -223,7 +223,7 @@ plt.subplots_adjust(left=0.2, bottom=0.1, right=2.0, top=1.2, wspace=0.4, hspace
 plt.show()
 ```
 
-![Untitled](%E1%84%87%E1%85%A5%E1%84%82%E1%85%B5%E1%86%BA%20API%20%209090d/Untitled%203.png)
+![Untitled](images/Untitled 1.png)
 
 학습과 검증에 필요한 데이터는 모두 데이터 서버에 있습니다. augmented.ipynb 코드를 실행하지 않아도 데이터서버에 있는 모든 파일들을 다운로드하여도 무방합니다.
 
