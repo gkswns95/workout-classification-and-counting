@@ -223,7 +223,7 @@ plt.subplots_adjust(left=0.2, bottom=0.1, right=2.0, top=1.2, wspace=0.4, hspace
 plt.show()
 ```
 
-![Untitled](images/Untitled 3.png)
+![Untitled](images/Untitled_3.png)
 
 학습과 검증에 필요한 데이터는 모두 데이터 서버에 있습니다. augmented.ipynb 코드를 실행하지 않아도 데이터서버에 있는 모든 파일들을 다운로드하여도 무방합니다.
 
