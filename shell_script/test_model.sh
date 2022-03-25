@@ -1,3 +1,2 @@
 #!/bin/bash
-python preprocessing_sensordata.py --dir_path ./raw_test/ --save_path save_test_torch/ --num_files 1000
-python load_pretrain_model.py --src_path save_test_torch
+python test_pretrain_model.py --dir_path ./raw_test/ --save_path last_test/ --num_files 1 --preprocessed_file_name test --save_path_results ./test.txt
