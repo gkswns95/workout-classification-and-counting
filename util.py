@@ -73,7 +73,7 @@ def sampling(data, sampling_num):
             sampled_data.append(np.mean(data[row:row+sampling_num,:],axis=0))        
     return pd.DataFrame(sampled_data,columns=data_col)
 
-def save_torch(dir_path, save_path, num, decoding=True):
+def save_torch(dir_path, save_path, num, preprocessed_file_name, decoding=True):
     
     max_len = 60 
     files = os.listdir(dir_path)
@@ -122,6 +122,6 @@ def save_torch(dir_path, save_path, num, decoding=True):
     y_count = torch.stack(count).float()
     
     # save test data
-    with open(save_path + 'test.pickle.pkl', 'wb') as f:  
+    with open(save_path + preprocessed_file_name + '.pickle.pkl', 'wb') as f:  
         pickle.dump([x_data, y_label, y_count], f)
 

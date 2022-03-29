@@ -172,7 +172,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     print("Preprocessing raw sensordata...")
-    save_torch(args.dir_path, args.save_path, args.num_files, args.preprocessed_file_name, args.save_path_results)
+    save_torch(args.dir_path, args.save_path, args.num_files, args.preprocessed_file_name)
     print("Successfully save preprocessed torch data!")
 
     test(lr=0.0001, data='cat')
