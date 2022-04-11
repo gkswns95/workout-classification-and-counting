@@ -73,6 +73,53 @@ def sampling(data, sampling_num):
             sampled_data.append(np.mean(data[row:row+sampling_num,:],axis=0))        
     return pd.DataFrame(sampled_data,columns=data_col)
 
+def save_torch_raw_data(dir_path, save_path, num, preprocessed_file_name, decoding=True):
+    
+    max_len = 60 
+    files = os.listdir(dir_path)
+
+    max_len_list = []
+    file_name_list =[]
+
+    files = getfiles(dir_path)
+    random.shuffle(files)
+    for file in tqdm(files[:num], desc='make squence'):
+        if '.ipynb' in file:
+            continue
+        
+        data = pd.read_csv(dir_path + file, index_col=None, skiprows=[0], header=None)
+        
+        data = decode(data.astype(str))
+        
+        # smoothing
+        data = data.rolling(10).mean()
+        
+        # sampling
+        data = sampling(data, sampling_num=10)
+
+        # normalization
+        data = (data - data.mean())/data.std()  
+        if data.isnull().values.any():
+            data = data.fillna(0)
+        seq_list = []
+
+        if len(data) < max_len * 10:  # if data length over max length, zero padding
+            pad = pd.DataFrame(np.zeros((max_len * 10 - len(data), 8)),columns=data.columns)
+            cat_df = pd.concat([data, pad], axis=0).reset_index()
+            cat_df = cat_df.drop(['index'], axis=1)
+            
+            for i in range(max_len):  # make sequence data
+                seq_list.append(torch.tensor(np.array(cat_df.iloc[i*10 : i*10 + 10,:])))
+
+            max_len_list.append(torch.stack(seq_list))
+            file_name_list.append(file)
+            
+    x_data = torch.stack(max_len_list).float()
+    
+    # save test data
+    with open(save_path + preprocessed_file_name + '.pickle.pkl', 'wb') as f:  
+        pickle.dump([x_data, file_name_list], f)
+
 def save_torch(dir_path, save_path, num, preprocessed_file_name, decoding=True):
     
     max_len = 60 
